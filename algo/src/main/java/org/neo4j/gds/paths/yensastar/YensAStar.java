@@ -39,6 +39,7 @@ import org.neo4j.gds.paths.yensastar.config.ImmutableShortestPathYensAStarBaseCo
 import org.neo4j.gds.paths.dijkstra.Dijkstra;
 import org.neo4j.gds.paths.dijkstra.DijkstraResult;
 import org.neo4j.gds.paths.yensastar.heuristic.HaversineHeuristic;
+import org.neo4j.gds.paths.yensastar.heuristic.PriceHeuristic;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -64,6 +65,7 @@ public final class YensAStar extends Algorithm<DijkstraResult> {
         this.graph = graph;
         this.config = config;
         this.terminationFlag = dijkstra.getTerminationFlag();
+
         // Track nodes and relationships that are skipped in a single iteration.
         // The content of these data structures is reset after each of k iterations.
         this.nodeBlackList = new LongScatterSet();
@@ -109,9 +111,10 @@ public final class YensAStar extends Algorithm<DijkstraResult> {
         var longitudeProperties = graph.nodeProperties(longitudeProperty);
         var targetNode = graph.toMappedNodeId(config.targetNode());
 
-        var heuristic = new HaversineHeuristic(latitudeProperties, longitudeProperties, targetNode);
+        var heuristic = new PriceHeuristic(graph.nodeProperties(config.economyPriceProperty()),
+                graph.nodeProperties(config.businessPriceProperty()), targetNode);
 
-        var dijkstra = Dijkstra.sourceTarget(graph, config, Optional.of(heuristic), progressTracker);
+        var dijkstra = Dijkstra.sourceTarget(graph, newConfig, Optional.of(heuristic), progressTracker);
         return new YensAStar(graph, dijkstra, newConfig, progressTracker);
     }
 
