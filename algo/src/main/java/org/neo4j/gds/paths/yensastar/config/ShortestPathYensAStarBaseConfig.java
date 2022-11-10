@@ -31,14 +31,21 @@ public interface ShortestPathYensAStarBaseConfig extends ShortestPathBaseConfig 
     String LATITUDE_PROPERTY_KEY = "latitudeProperty";
 
     String ECONOMY_PRICE_PROPERTY_KEY = "economyPriceProperty";
+    String ECONOMY_SEATS_PROPERTY_KEY = "economySeatsProperty";
+
     String BUSINESS_PRICE_KEY = "businessPriceProperty";
 
     String longitudeProperty();
-
     String latitudeProperty();
 
-    String economyPriceProperty();
-    String businessPriceProperty();
+    String seatsProperty();
+    //String businessSeatsProperty();
+    //String arrivalProperty();
+    String departureProperty();
+    //String cabinType();
+    String departureDate();
+   // String arrivalDate();
+    int requestedSeats();
 
     // Number of shortest paths to compute
     @Configuration.IntegerRange(min = 1)

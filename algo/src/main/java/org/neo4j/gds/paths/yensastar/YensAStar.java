@@ -25,22 +25,20 @@ import com.carrotsearch.hppc.LongScatterSet;
 import org.jetbrains.annotations.NotNull;
 import org.neo4j.gds.Algorithm;
 import org.neo4j.gds.api.Graph;
-import org.neo4j.gds.api.properties.nodes.NodePropertyValues;
 import org.neo4j.gds.core.utils.mem.MemoryEstimation;
 import org.neo4j.gds.core.utils.mem.MemoryEstimations;
-import org.neo4j.gds.core.utils.paged.HugeLongDoubleMap;
 import org.neo4j.gds.core.utils.progress.tasks.ProgressTracker;
 import org.neo4j.gds.mem.MemoryUsage;
 import org.neo4j.gds.paths.PathResult;
-import org.neo4j.gds.paths.yensastar.MutablePathResult;
-import org.neo4j.gds.paths.yensastar.YensAStar;
-import org.neo4j.gds.paths.yensastar.config.ShortestPathYensAStarBaseConfig;
-import org.neo4j.gds.paths.yensastar.config.ImmutableShortestPathYensAStarBaseConfig;
 import org.neo4j.gds.paths.dijkstra.Dijkstra;
 import org.neo4j.gds.paths.dijkstra.DijkstraResult;
-import org.neo4j.gds.paths.yensastar.heuristic.HaversineHeuristic;
-import org.neo4j.gds.paths.yensastar.heuristic.PriceHeuristic;
+import org.neo4j.gds.paths.yensastar.config.ImmutableShortestPathYensAStarBaseConfig;
+import org.neo4j.gds.paths.yensastar.config.ShortestPathYensAStarBaseConfig;
+import org.neo4j.gds.paths.yensastar.heuristic.FlightsHeuristic;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
@@ -52,11 +50,14 @@ import static org.neo4j.gds.utils.StringFormatting.formatWithLocale;
 public final class YensAStar extends Algorithm<DijkstraResult> {
 
     private static final LongHashSet EMPTY_SET = new LongHashSet(0);
-
+    // The blacklists contain nodes and relationships that are
+    // "forbidden" to be traversed by Dijkstra. The size of that
+    // blacklist is not known upfront and depends on the length
+    // of the found paths.
+    private static final long AVERAGE_BLACKLIST_SIZE = 10L;
     private final Graph graph;
     private final ShortestPathYensAStarBaseConfig config;
     private final Dijkstra dijkstra;
-
     private final LongScatterSet nodeBlackList;
     private final LongObjectScatterMap<LongHashSet> relationshipBlackList;
 
@@ -77,6 +78,7 @@ public final class YensAStar extends Algorithm<DijkstraResult> {
                         !(relationshipBlackList.getOrDefault(source, EMPTY_SET).contains(relationshipId))
         );
     }
+
     public static YensAStar sourceTarget(
             Graph graph,
             ShortestPathYensAStarBaseConfig config,
@@ -109,20 +111,21 @@ public final class YensAStar extends Algorithm<DijkstraResult> {
 
         var latitudeProperties = graph.nodeProperties(latitudeProperty);
         var longitudeProperties = graph.nodeProperties(longitudeProperty);
-        var targetNode = graph.toMappedNodeId(config.targetNode());
+        var seatsProperties = graph.nodeProperties(config.seatsProperty());
+        //var arrivalProperties = graph.nodeProperties(config.arrivalProperty());
+        var departureProperties = graph.nodeProperties(config.departureProperty());
+        //var businessSeatsProperties = graph.nodeProperties(config.businessSeatsProperty());
 
-        var heuristic = new PriceHeuristic(graph.nodeProperties(config.economyPriceProperty()),
-                graph.nodeProperties(config.businessPriceProperty()), targetNode);
+        var targetNode = graph.toMappedNodeId(config.targetNode());
+        LocalDate ltd = LocalDate.parse(config.departureDate(),
+                DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        var heuristic = new FlightsHeuristic(latitudeProperties, longitudeProperties,
+                departureProperties, seatsProperties, ltd, config.requestedSeats(), targetNode);
+
 
         var dijkstra = Dijkstra.sourceTarget(graph, newConfig, Optional.of(heuristic), progressTracker);
         return new YensAStar(graph, dijkstra, newConfig, progressTracker);
     }
-
-    // The blacklists contain nodes and relationships that are
-    // "forbidden" to be traversed by Dijkstra. The size of that
-    // blacklist is not known upfront and depends on the length
-    // of the found paths.
-    private static final long AVERAGE_BLACKLIST_SIZE = 10L;
 
     public static MemoryEstimation memoryEstimation() {
         return MemoryEstimations.builder(YensAStar.class.getSimpleName())

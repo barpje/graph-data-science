@@ -8,7 +8,9 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/.name
-
+.idea/sonarlint/**
+.idea/vcs.xml
+.idea/sonarlint/issuestore/**
 # Generated files
 .idea/**/contentModel.xml
 

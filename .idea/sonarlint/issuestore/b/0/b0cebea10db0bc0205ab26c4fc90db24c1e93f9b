@@ -1,19 +1,5 @@
 
-\
-java:S1854o"GRemove this useless assignment to local variable "longitudeProperties".(‘•1
-a
-java:S1854n"FRemove this useless assignment to local variable "latitudeProperties".(ºÑáìúÿÿÿÿ
-R
-java:S1481n"7Remove this unused "latitudeProperties" local variable.(ºÑáìúÿÿÿÿ
-M
-java:S1481o"8Remove this unused "longitudeProperties" local variable.(‘•1
+Q	java:S125s"<This block of commented-out lines of code should be removed.(ö¼óÎ
+Q	java:S125u"<This block of commented-out lines of code should be removed.(Â¶¡ç
 h
-java:S3776ˆ"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(˜÷¨
-h
-java:S1128"RRemove this unused import 'org.neo4j.gds.api.properties.nodes.NodePropertyValues'.(£ìì¶
-c
-java:S1128"MRemove this unused import 'org.neo4j.gds.core.utils.paged.HugeLongDoubleMap'.(Š‡ã´
-j
-java:S1128#"TRemove this unnecessary import: same package classes are always implicitly imported.(¯õò“
-r
-java:S1128)"WRemove this unused import 'org.neo4j.gds.paths.yensastar.heuristic.HaversineHeuristic'.(¨äµèøÿÿÿÿ
+java:S3776‹"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(˜÷¨
