@@ -1,7 +1,9 @@
 
-c
-java:S1128"MRemove this unused import 'org.neo4j.gds.core.utils.paged.HugeLongDoubleMap'.(ใด
-K
-java:S1068"0Remove this unused "economyPrice" private field.(ฟืฌ๛ÿÿÿÿ
+T
+java:S1068"7Remove this unused "targetBusinessPrice" private field.(๎ฉ8พýใจร0
+Q
+java:S1068"6Remove this unused "targetEconomySeats" private field.(ฺ๖ÿÿÿÿÿ
+R
+java:S1068"0Remove this unused "economyPrice" private field.(ฟืฌ๛ÿÿÿÿ8พýใจร0
 L
-java:S1068"1Remove this unused "businessPrice" private field.(Üอๅญþÿÿÿÿ
+java:S1068"1Remove this unused "businessPrice" private field.(Üอๅญþÿÿÿÿ
