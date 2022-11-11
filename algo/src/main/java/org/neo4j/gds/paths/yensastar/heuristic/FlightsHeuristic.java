@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
 
     static final double DEFAULT_DISTANCE = Double.NaN;
-    static final double HEURISTIC_INF = 10000;
+    static final double HEURISTIC_INF = 0.04;
 
     // kilometer to nautical mile
     static final double KM_TO_NM = 0.539957;
@@ -19,7 +19,12 @@ public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
 
     // flight estimation
     static final double NM_TO_MILES = 1.1508;
-    static final double AVERAGE_CRUISE_SPEED = 580; // in miles
+    static final double AVERAGE_CRUISE_SPEED_0_400 = 166; // in nautical miles per hour
+    static final double AVERAGE_CRUISE_SPEED_400_1000 = 287; // in nautical miles per hour
+    static final double AVERAGE_CRUISE_SPEED_1000_2500 = 398; // in nautical miles per hour
+    static final double AVERAGE_CRUISE_SPEED_2500_4000 = 432.5; // in nautical miles per hour
+    static final double AVERAGE_CRUISE_SPEED_4000_UP = 444.6; // in nautical miles per hour
+
     static final double MAX_FLIGHT_TIME = 18.50; // hours
     static final double NOTHING_CHANGE = 0; // wrong node type or matched requirements indicator
 
@@ -82,10 +87,15 @@ public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
     }
 
     public double getHeuristicDuration(double distance){
-        double distanceInMiles = distance * NM_TO_MILES;
-        if (distanceInMiles < 1000) return distanceInMiles / 320 / MAX_FLIGHT_TIME;
-        if (distanceInMiles > 1000 && distanceInMiles < 3000) return distanceInMiles / 385 / MAX_FLIGHT_TIME;
-        return distanceInMiles / AVERAGE_CRUISE_SPEED / MAX_FLIGHT_TIME;  //470
+        if (distance <= 400) {
+            return distance / AVERAGE_CRUISE_SPEED_0_400 / MAX_FLIGHT_TIME;
+        } else if (distance > 400 && distance <= 1000) {
+            return distance / AVERAGE_CRUISE_SPEED_400_1000 / MAX_FLIGHT_TIME;
+        } else if (distance > 1000 && distance <= 2500) {
+            return distance / AVERAGE_CRUISE_SPEED_1000_2500 / MAX_FLIGHT_TIME;
+        } else if (distance > 2500 && distance <= 4000) {
+            return distance / AVERAGE_CRUISE_SPEED_2500_4000 / MAX_FLIGHT_TIME;
+        }else return distance / AVERAGE_CRUISE_SPEED_4000_UP / MAX_FLIGHT_TIME;
     }
 
     public double checkAvl(long source) {
