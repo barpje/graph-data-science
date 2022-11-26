@@ -113,14 +113,14 @@ public final class YensAStar extends Algorithm<DijkstraResult> {
         var longitudeProperties = graph.nodeProperties(longitudeProperty);
         var seatsProperties = graph.nodeProperties(config.seatsProperty());
         //var arrivalProperties = graph.nodeProperties(config.arrivalProperty());
-        var departureProperties = graph.nodeProperties(config.departureProperty());
+        //var departureProperties = graph.nodeProperties(config.departureProperty());
         //var businessSeatsProperties = graph.nodeProperties(config.businessSeatsProperty());
 
         var targetNode = graph.toMappedNodeId(config.targetNode());
-        LocalDate ltd = LocalDate.parse(config.departureDate(),
-                DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+//        LocalDate ltd = LocalDate.parse(config.departureDate(),
+//                DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         var heuristic = new FlightsHeuristic(latitudeProperties, longitudeProperties,
-                departureProperties, seatsProperties, ltd, config.requestedSeats(), targetNode);
+                seatsProperties, config.requestedSeats(), targetNode);
 
 
         var dijkstra = Dijkstra.sourceTarget(graph, newConfig, Optional.of(heuristic), progressTracker);

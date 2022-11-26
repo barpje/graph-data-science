@@ -34,13 +34,13 @@ public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
     private final NodePropertyValues latitudeProperties;
     private final NodePropertyValues longitudeProperties;
     // private final NodePropertyValues arrivalProperties;
-    private final NodePropertyValues departureProperties;
+    // private final NodePropertyValues departureProperties;
     private final NodePropertyValues seatsProperties;
     //private final NodePropertyValues businessSeatsProperties;
     private final HugeLongDoubleMap distanceCache;
 
     //private final String cabinType;
-    private final LocalDate departureDate;
+    // bprivate final LocalDate departureDate;
     //private final double arrivalDate;
     private final int requestedSeats;
 
@@ -48,11 +48,11 @@ public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
             NodePropertyValues latitudeProperties,
             NodePropertyValues longitudeProperties,
             //NodePropertyValues arrivalProperties,
-            NodePropertyValues departureProperties,
+            //NodePropertyValues departureProperties,
             NodePropertyValues seatsProperties,
             //NodePropertyValues businessSeatsProperties,
             //String cabinType,
-            LocalDate departureDate,
+            // LocalDate departureDate,
             //double arrivalDate,
             int requestedSeats,
             long targetNode
@@ -60,13 +60,13 @@ public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
         this.latitudeProperties = latitudeProperties;
         this.longitudeProperties = longitudeProperties;
         // this.arrivalProperties = arrivalProperties;
-        this.departureProperties = departureProperties;
+        // this.departureProperties = departureProperties;
         this.seatsProperties = seatsProperties;
         // this.businessSeatsProperties = businessSeatsProperties;
         this.targetLatitude = latitudeProperties.doubleValue(targetNode);
         this.targetLongitude = longitudeProperties.doubleValue(targetNode);
         // this.cabinType = cabinType;
-        this.departureDate = departureDate;
+        // this.departureDate = departureDate;
         // this.arrivalDate = arrivalDate;
         this.requestedSeats = requestedSeats;
         this.distanceCache = new HugeLongDoubleMap();
@@ -82,7 +82,7 @@ public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
             distance = distance(sourceLatitude, sourceLongitude, targetLatitude, targetLongitude);
             distanceCache.addTo(source, distance);
         }
-        final double heuristicCut = checkDate(source) + checkAvl(source);
+        final double heuristicCut = checkAvl(source);
         return getHeuristicDuration(distance) + heuristicCut;
     }
 
@@ -109,18 +109,18 @@ public class FlightsHeuristic implements Dijkstra.HeuristicFunction {
         return NOTHING_CHANGE;
     }
 
-    public double checkDate(long source) {
-        if (departureProperties.value(source) == null) {
-            return NOTHING_CHANGE;  // nothing change, different node type
-        }
-        // var arrival = arrivalProperties.doubleValue(source);
-        var departure = departureProperties.doubleValue(source);
-        LocalDate departureLd = LocalDate.ofEpochDay(Duration.ofMillis(Double.valueOf(departure).longValue()).toDays());
-        if (departureLd.isBefore(departureDate)) {
-            return HEURISTIC_INF;
-        }
-        return NOTHING_CHANGE;
-    }
+//    public double checkDate(long source) {
+//        if (departureProperties.value(source) == null) {
+//            return NOTHING_CHANGE;  // nothing change, different node type
+//        }
+//        // var arrival = arrivalProperties.doubleValue(source);
+//        var departure = departureProperties.doubleValue(source);
+//        LocalDate departureLd = LocalDate.ofEpochDay(Duration.ofMillis(Double.valueOf(departure).longValue()).toDays());
+//        if (departureLd.isBefore(departureDate)) {
+//            return HEURISTIC_INF;
+//        }
+//        return NOTHING_CHANGE;
+//    }
 
     // https://rosettacode.org/wiki/Haversine_formula#Java
     public static double distance(

@@ -95,13 +95,13 @@ t
 Dalgo/src/main/java/org/neo4j/gds/paths/delta/TentativeDistances.java,5\e\5ec6ebccdd62110448a06f11ffc39fab128f4c62
 ~
 Nalgo/src/main/java/org/neo4j/gds/paths/yensastar/heuristic/PriceHeuristic.java,d\3\d3ad301f2eb6ec8af06fbd2cef9fbb843d099e12
-o
-?algo/src/main/java/org/neo4j/gds/paths/yensastar/YensAStar.java,b\0\b0cebea10db0bc0205ab26c4fc90db24c1e93f9b
+m
+=algo/src/main/java/org/neo4j/gds/paths/dijkstra/Dijkstra.java,9\5\95a26f95426aced14158feff5eaf169e655c258f
 Œ
 \algo/src/main/java/org/neo4j/gds/paths/yensastar/config/ShortestPathYensAStarBaseConfig.java,b\e\bef0dfe70d11b8526974e4160463eb1859182bce
 Ž
 ^algo/src/main/java/org/neo4j/gds/paths/yensastar/config/ShortestPathYensAStarMutateConfig.java,3\5\35e9264248843dd9fee6bf268b004386986a9f95
-m
-=algo/src/main/java/org/neo4j/gds/paths/dijkstra/Dijkstra.java,9\5\95a26f95426aced14158feff5eaf169e655c258f
 €
 Palgo/src/main/java/org/neo4j/gds/paths/yensastar/heuristic/FlightsHeuristic.java,f\8\f8862b7b1e62d18fbf1100cdd91ff53faca49086
+o
+?algo/src/main/java/org/neo4j/gds/paths/yensastar/YensAStar.java,b\0\b0cebea10db0bc0205ab26c4fc90db24c1e93f9b

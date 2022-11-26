@@ -41,10 +41,10 @@ public interface ShortestPathYensAStarBaseConfig extends ShortestPathBaseConfig 
     String seatsProperty();
     //String businessSeatsProperty();
     //String arrivalProperty();
-    String departureProperty();
+    //String departureProperty();
     //String cabinType();
-    String departureDate();
-   // String arrivalDate();
+    //String departureDate();
+    //String arrivalDate();
     int requestedSeats();
 
     // Number of shortest paths to compute
